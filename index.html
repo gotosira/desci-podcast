@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXONS UX/UI Podcast - Design Leadership & Innovation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            color: var(--lg-text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        :root body {
+            background: linear-gradient(135deg, #f4f7fb 0%, #e9f3fa 100%);
+        }
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f23 100%);
+        }
+
+        /* Smooth scrolling for the entire page */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Microphone Cursor */
+        .microphone-cursor {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        /* Liquid Glass CSS Variables */
+        :root {
+            /* Beautiful Light theme */
+            --lg-bg-color: rgba(255, 255, 255, 0.7);
+            --lg-highlight: rgba(0, 169, 224, 0.10);
+            --lg-text: #23272f;
+            --lg-hover-glow: rgba(0, 169, 224, 0.08);
+            --lg-accent: #00A9E0;
+            --lg-accent2: #00B47E;
+            --lg-card-bg: #f8fafc;
+            --lg-card-border: #e3e8ef;
+            --lg-footer-bg: #f4f7fb;
+            --lg-footer-text: #4a5568;
+            --lg-link: #0077b6;
+            --lg-link-hover: #00B47E;
+            --lg-nav-bg: rgba(255,255,255,0.85);
+            --lg-nav-shadow: 0 4px 24px 0 rgba(0,0,0,0.06);
+            --logo-stroke-light: #23272f;
+            --logo-glow-light: #00A9E0;
+            --logo-glow2-light: #00B47E;
+        }
+        [data-theme="dark"] {
+            --lg-bg-color: rgba(18, 22, 28, 0.92);
+            --lg-highlight: rgba(255, 255, 255, 0.3);
+            --lg-text: #ffffff;
+            --lg-hover-glow: rgba(255, 255, 255, 0.15);
+            --lg-accent: #00A9E0;
+            --lg-accent2: #00B47E;
+            --lg-card-bg: #181a20;
+            --lg-card-border: #22242a;
+            --lg-footer-bg: #0a0a0a;
+            --lg-footer-text: #b0b0b0;
+            --lg-link: #00A9E0;
+            --lg-link-hover: #00B47E;
+        }
+
+        /* Navigation - Clean Liquid Glass Effect */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            background: var(--lg-nav-bg);
+            box-shadow: var(--lg-nav-shadow);
+            backdrop-filter: blur(6px) saturate(1.1);
+            -webkit-backdrop-filter: blur(6px) saturate(1.1);
+        }
+        [data-theme="dark"] nav {
+            background: rgba(18, 22, 28, 0.7);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: transparent;
+            border-radius: 20px;
+            border: none;
+            box-shadow: none;
+            overflow: visible;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+        }
+
+        .nav-container:hover {
+            background: var(--lg-hover-glow);
+            box-shadow: 0 8px 32px rgba(0, 169, 224, 0.07);
+            transform: translateY(-2px);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 3;
+            position: relative;
+        }
+
+        .nav-logo svg {
+            filter: drop-shadow(0 0 3px rgba(0, 169, 224, 0.3));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            z-index: 3;
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--lg-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            background: transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--lg-accent2);
+            background: var(--lg-hover-glow);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+            text-shadow: 0 0 8px rgba(0, 180, 126, 0.5);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent2));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 1200px;
+            z-index: 2;
+        }
+
+        .logo-container {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            margin: 0 auto 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container svg {
+            width: 100%;
+            height: auto;
+            max-width: 700px;
+            overflow: visible;
+        }
+
+        /* Optimized Logo Animation Styles - Performance First */
+        .logo-container svg {
+            will-change: opacity;
+            transform: translateZ(0); /* Force hardware acceleration */
+        }
+
+        .master-animation-group {
+            animation: fade-cycle 30s ease-in-out infinite;
+        }
+
+        @keyframes fade-cycle {
+            0%, 10% { opacity: 0.8; }
+            50% { opacity: 1; }
+            90%, 100% { opacity: 0.8; }
+        }
+        
+        /* Base paths - simplified styling */
+        .base-style path {
+            stroke-width: 1.5;
+            stroke: #2a4b5c;
+            fill: none;
+            will-change: stroke, opacity;
+        }
+        
+        /* Simplified logo circles - reduced complexity */
+        .base-style path:nth-child(1),
+        .base-style path:nth-child(2),
+        .base-style path:nth-child(3) {
+            stroke: #00A9E0 !important;
+            stroke-width: 2 !important;
+            stroke-dasharray: 60 40 !important;
+            stroke-linecap: round !important;
+            fill: none !important;
+            animation: simple-orbit 8s linear infinite !important;
+            opacity: 0.8 !important;
+        }
+
+        .base-style path:nth-child(4),
+        .base-style path:nth-child(5),
+        .base-style path:nth-child(6),
+        .base-style path:nth-child(7) {
+            stroke: #00B47E !important;
+            stroke-width: 2 !important;
+            stroke-dasharray: 60 40 !important;
+            stroke-linecap: round !important;
+            fill: none !important;
+            animation: simple-orbit 12s linear infinite reverse !important;
+            opacity: 0.7 !important;
+        }
+
+        /* Text elements - minimal animation */
+        .base-style path:nth-child(8),
+        .base-style path:nth-child(9),
+        .base-style path:nth-child(10),
+        .base-style path:nth-child(11),
+        .base-style path:nth-child(12),
+        .base-style path:nth-child(13),
+        .base-style path:nth-child(14),
+        .base-style path:nth-child(15),
+        .base-style path:nth-child(16),
+        .base-style path:nth-child(17),
+        .base-style path:nth-child(18),
+        .base-style path:nth-child(19),
+        .base-style path:nth-child(20),
+        .base-style path:nth-child(21),
+        .base-style path:nth-child(22),
+        .base-style path:nth-child(23),
+        .base-style path:nth-child(24),
+        .base-style path:nth-child(25),
+        .base-style path:nth-child(26),
+        .base-style path:nth-child(27),
+        .base-style path:nth-child(28) {
+            stroke: #00A9E0;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: simple-glow 6s ease-in-out infinite alternate;
+            opacity: 0.9;
+        }
+
+        /* Simplified animations using only transform and opacity */
+        @keyframes simple-orbit {
+            0% { 
+                stroke-dashoffset: 100;
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% { 
+                stroke-dashoffset: 0;
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes simple-glow {
+            0% {
+                stroke: #00A9E0;
+                opacity: 0.8;
+            }
+            100% {
+                stroke: #00B47E;
+                opacity: 1;
+            }
+        }
+
+        /* Optimized liquid refraction effect */
+        @keyframes liquidRefract {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .podcast-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 169, 224, 0.1);
+            border: 1px solid var(--lg-accent);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--lg-accent);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, var(--lg-accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            font-weight: 400;
+            color: var(--lg-footer-text);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .listen-platforms {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .platform-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            
+            /* Liquid Glass Effect */
+            background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent2));
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px 0 rgba(0,169,224,0.13);
+            
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .platform-btn:hover {
+            background: linear-gradient(135deg, var(--lg-accent2), var(--lg-accent));
+            color: #fff;
+            box-shadow: 0 8px 32px 0 rgba(0,180,126,0.13);
+            transform: translateY(-2px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            
+            /* Enhanced Liquid Glass for CTA */
+            background: linear-gradient(135deg, 
+                rgba(0, 169, 224, 0.8), 
+                rgba(0, 180, 126, 0.8));
+            backdrop-filter: blur(3px) saturate(1.2) contrast(1.15);
+            -webkit-backdrop-filter: blur(3px) saturate(1.2) contrast(1.15);
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(0, 169, 224, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+
+        .cta-button:hover::after {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, 
+                rgba(0, 169, 224, 0.9), 
+                rgba(0, 180, 126, 0.9));
+            box-shadow: 
+                0 12px 40px rgba(0, 169, 224, 0.4),
+                0 0 30px rgba(0, 180, 126, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff, #00A9E0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            /* Liquid Glass Effect */
+            background: var(--lg-card-bg);
+            border: 1px solid var(--lg-card-border);
+            color: var(--lg-text);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+            border-radius: 18px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            inset: -20%;
+            background: radial-gradient(
+                ellipse 100% 100% at 50% 50%,
+                rgba(0, 169, 224, 0.05) 0%,
+                transparent 60%
+            );
+            filter: blur(2px);
+            animation: liquidRefract 20s ease-in-out infinite;
+            z-index: -1;
+            will-change: opacity;
+        }
+
+        .stat-item:hover {
+            background: var(--lg-hover-glow);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.15),
+                0 0 20px rgba(0, 169, 224, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00A9E0, #00B47E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Episodes Section */
+        .episodes {
+            padding: 8rem 2rem;
+        }
+
+        .episodes-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #ffffff, #00A9E0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .episodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .episode-card {
+            /* Liquid Glass Card Effect */
+            background: var(--lg-card-bg);
+            border: 1px solid var(--lg-card-border);
+            color: var(--lg-text);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+            border-radius: 18px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .episode-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 169, 224, 0.5), rgba(0, 180, 126, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .episode-card:hover::after {
+            opacity: 1;
+        }
+
+        .episode-card:hover {
+            background: var(--lg-hover-glow);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                0 0 30px rgba(0, 169, 224, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+            border-color: rgba(0, 169, 224, 0.2);
+        }
+
+        .episode-number {
+            display: inline-block;
+            /* Liquid Glass Badge */
+            background: linear-gradient(135deg, 
+                rgba(0, 169, 224, 0.8), 
+                rgba(0, 180, 126, 0.8));
+            backdrop-filter: blur(3px) saturate(1.2);
+            -webkit-backdrop-filter: blur(3px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            box-shadow: 
+                0 2px 8px rgba(0, 169, 224, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .episode-number::before {
+            content: '';
+            position: absolute;
+            inset: -30%;
+            background: radial-gradient(
+                ellipse 80% 80% at 50% 50%,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 60%
+            );
+            filter: blur(1px);
+            animation: liquidRefract 15s ease-in-out infinite;
+            z-index: -1;
+            will-change: opacity;
+        }
+
+        .episode-number:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 4px 12px rgba(0, 169, 224, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .episode-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .episode-guest {
+            color: #00B47E;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .episode-description {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .episode-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .play-btn {
+            /* Liquid Glass Button */
+            background: linear-gradient(135deg, 
+                rgba(0, 169, 224, 0.8), 
+                rgba(0, 180, 126, 0.8));
+            backdrop-filter: blur(3px) saturate(1.2);
+            -webkit-backdrop-filter: blur(3px) saturate(1.2);
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 16px rgba(0, 169, 224, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            
+            color: white;
+            padding: 0.5rem 1rem;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(0, 169, 224, 0.9), 
+                rgba(0, 180, 126, 0.9));
+            box-shadow: 
+                0 6px 20px rgba(0, 169, 224, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Podcast Crew Section */
+        .podcast-crew {
+            padding: 8rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .podcast-crew-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .podcast-crew-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .crew-card {
+            text-align: center;
+            /* Liquid Glass Card Effect */
+            background: var(--lg-card-bg);
+            border: 1px solid var(--lg-card-border);
+            color: var(--lg-text);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+            border-radius: 18px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .crew-card::before {
+            content: '';
+            position: absolute;
+            inset: -15%;
+            background: radial-gradient(
+                ellipse 120% 120% at 50% 50%,
+                rgba(0, 180, 126, 0.04) 0%,
+                transparent 60%
+            );
+            filter: blur(2px);
+            animation: liquidRefract 25s ease-in-out infinite;
+            z-index: -1;
+            will-change: opacity;
+        }
+
+        .crew-card:hover {
+            background: var(--lg-hover-glow);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                0 0 30px rgba(0, 180, 126, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+            border-color: rgba(0, 180, 126, 0.2);
+        }
+
+        .crew-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00A9E0, #00B47E);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .crew-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .crew-role {
+            color: #00B47E;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .crew-bio {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* Events Section */
+        .events {
+            padding: 8rem 2rem;
+        }
+
+        .events-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            /* Liquid Glass Card Effect */
+            background: var(--lg-card-bg);
+            border: 1px solid var(--lg-card-border);
+            color: var(--lg-text);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+            border-radius: 18px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            inset: -10%;
+            background: radial-gradient(
+                ellipse 120% 120% at 50% 50%,
+                rgba(0, 169, 224, 0.03) 0%,
+                rgba(0, 180, 126, 0.02) 50%,
+                transparent 60%
+            );
+            filter: blur(1px);
+            animation: liquidRefract 30s ease-in-out infinite;
+            z-index: -1;
+            will-change: opacity;
+        }
+
+        .event-card:hover {
+            background: var(--lg-hover-glow);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                0 0 30px rgba(0, 169, 224, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border-color: rgba(0, 169, 224, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .event-date {
+            /* Liquid Glass Badge */
+            background: linear-gradient(135deg, 
+                rgba(0, 169, 224, 0.8), 
+                rgba(0, 180, 126, 0.8));
+            backdrop-filter: blur(3px) saturate(1.2);
+            -webkit-backdrop-filter: blur(3px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            box-shadow: 
+                0 2px 8px rgba(0, 169, 224, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-date::before {
+            content: '';
+            position: absolute;
+            inset: -30%;
+            background: radial-gradient(
+                ellipse 80% 80% at 50% 50%,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 60%
+            );
+            filter: blur(1px);
+            animation: liquidRefract 18s ease-in-out infinite;
+            z-index: -1;
+            will-change: opacity;
+        }
+
+        .event-date:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 4px 12px rgba(0, 169, 224, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .event-description {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-link {
+            color: #00B47E;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .event-link:hover {
+            color: #00A9E0;
+        }
+
+        /* Optimized Background Effects */
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 169, 224, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 180, 126, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -1;
+            will-change: transform;
+            animation: grid-move 40s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(60px, 60px, 0); }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: #00A9E0;
+            border-radius: 50%;
+            will-change: transform, opacity;
+            animation: float 30s infinite linear;
+        }
+
+        .particle:nth-child(2) { left: 25%; animation-delay: -10s; background: #00B47E; }
+        .particle:nth-child(3) { left: 50%; animation-delay: -20s; }
+        .particle:nth-child(4) { left: 75%; animation-delay: -5s; background: #00B47E; }
+
+        @keyframes float {
+            0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
+            10% { opacity: 0.5; transform: translate3d(0, 90vh, 0) scale(1); }
+            90% { opacity: 0.5; transform: translate3d(0, -90vh, 0) scale(1); }
+            100% { transform: translate3d(0, -100vh, 0) scale(0); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                width: 100vw; height: 100vh;
+                margin: 0; padding: 0;
+                background: rgba(18, 22, 28, 0.92);
+                backdrop-filter: blur(32px);
+                -webkit-backdrop-filter: blur(32px);
+                z-index: 9999;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-10px);
+                transition: opacity 0.3s, transform 0.3s;
+                gap: 2rem;
+            }
+            .nav-links.open {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+            .nav-links li {
+                margin: 0;
+            }
+            .nav-links a {
+                display: block;
+                padding: 0.5em 2em;
+                border-radius: 12px;
+                font-size: clamp(1.2rem, 5vw, 2rem);
+                font-weight: 700;
+                color: #fff;
+                background: none;
+                box-shadow: none;
+                margin: 0;
+                text-align: center;
+                transition: background 0.25s, color 0.25s;
+            }
+            .nav-links a:hover, .nav-links a:focus {
+                background: rgba(0, 180, 126, 0.18);
+                color: #00B47E;
+            }
+            .nav-container {
+                overflow: visible !important;
+                position: relative;
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--lg-footer-bg);
+            color: var(--lg-footer-text);
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 -2px 16px 0 rgba(0,0,0,0.04);
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300A9E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>') 12 12, pointer;
+        }
+
+        .footer-links a:hover {
+            color: #00B47E;
+        }
+
+        /* Hamburger styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            margin: 4px 0;
+            background: linear-gradient(135deg, #00A9E0, #00B47E);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: var(--lg-bg-color);
+                backdrop-filter: blur(3px) saturate(1.165) contrast(1.12);
+                -webkit-backdrop-filter: blur(3px) saturate(1.165) contrast(1.12);
+                border-radius: 0 0 20px 20px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+                width: 200px;
+                margin: 0;
+                padding: 1rem 0;
+                gap: 0;
+                z-index: 9;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-10px);
+                transition: opacity 0.3s, transform 0.3s;
+            }
+            .nav-links.open {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+            .nav-links li {
+                margin: 0;
+            }
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+                border-radius: 0;
+            }
+        }
+
+        /* Newsletter Section Styles */
+        .newsletter-section {
+            padding: 6rem 2rem 4rem;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+        }
+        .newsletter-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--lg-bg-color);
+            backdrop-filter: blur(3px) saturate(1.165) contrast(1.12);
+            -webkit-backdrop-filter: blur(3px) saturate(1.165) contrast(1.12);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 var(--lg-highlight);
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+        }
+        .newsletter-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #00A9E0, #00B47E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .newsletter-desc {
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+        }
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .newsletter-input {
+            flex: 1 1 200px;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0,169,224,0.2);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .newsletter-input:focus {
+            border: 1.5px solid #00A9E0;
+            background: rgba(0,169,224,0.05);
+        }
+        .newsletter-btn {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, #00A9E0, #00B47E);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,169,224,0.2);
+            transition: background 0.3s, transform 0.2s;
+        }
+        .newsletter-btn:hover {
+            background: linear-gradient(135deg, #00B47E, #00A9E0);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .newsletter-thankyou {
+            color: #00B47E;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: opacity 0.3s;
+        }
+        @media (max-width: 600px) {
+            .newsletter-container {
+                padding: 1.5rem 0.5rem 1.5rem;
+            }
+            .newsletter-form {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .newsletter-btn, .newsletter-input {
+                width: 100%;
+            }
+        }
+
+        /* Enhanced theme toggle with moon icon */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+        }
+        .theme-toggle input[type="checkbox"] {
+            display: none;
+        }
+        .toggle-slider {
+            width: 50px;
+            height: 26px;
+            background: var(--lg-card-border);
+            border-radius: 13px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+            background: var(--lg-accent);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+        .moon-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--lg-text);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+        .moon-icon::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--lg-card-bg);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0);
+        }
+        input[type="checkbox"]:checked + .toggle-slider::before {
+            transform: translateX(21px);
+            background: var(--lg-accent2);
+        }
+        input[type="checkbox"]:checked + .toggle-slider .moon-icon {
+            transform: translate(-50%, -50%) rotate(180deg);
+        }
+        input[type="checkbox"]:checked + .toggle-slider .moon-icon::before {
+            transform: scale(1);
+        }
+        /* Light mode sun effect */
+        .toggle-slider::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, rgba(255,215,0,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+        input[type="checkbox"]:checked + .toggle-slider::after {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        [data-theme="dark"] .logo-container svg .base-style path {
+            stroke: #2a4b5c;
+            filter: none;
+        }
+        [data-theme="dark"] .logo-container svg .logo-glow path,
+        [data-theme="dark"] .logo-container svg .text-glow path {
+            stroke: #00A9E0;
+            filter: drop-shadow(0 0 4px #00A9E0) drop-shadow(0 0 8px #00B47E);
+        }
+
+        /* Only apply SVG color inversion for hero logo, not nav logo */
+        :root [data-theme="light"] .hero .logo-container svg .base-style path {
+            stroke: var(--logo-stroke-light);
+            filter: drop-shadow(0 0 4px var(--logo-glow-light)) drop-shadow(0 0 8px var(--logo-glow2-light));
+        }
+        :root [data-theme="light"] .hero .logo-container svg .logo-glow path {
+            stroke: var(--logo-glow-light) !important;
+            filter: drop-shadow(0 0 4px var(--logo-glow-light)) drop-shadow(0 0 8px var(--logo-glow2-light)) !important;
+        }
+        :root [data-theme="light"] .hero .logo-container svg .text-glow path {
+            stroke: var(--logo-glow-light); /* Removed !important */
+            filter: drop-shadow(0 0 4px var(--logo-glow-light)) drop-shadow(0 0 8px var(--logo-glow2-light)); /* Removed !important */
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid"></div>
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 12px;">
+                    <path d="M606.415 297.798C652.274 236.429 640.032 149.831 579.073 104.376C518.113 58.9206 431.521 71.8208 385.663 133.189L102.319 512.366C56.4613 573.735 68.703 660.333 129.662 705.788C190.621 751.243 277.214 738.343 323.072 676.975L606.415 297.798Z" fill="#00954C"/>
+                    <path d="M672.031 675.955C717.889 737.324 804.482 750.224 865.441 704.769C926.4 659.313 938.642 572.715 892.784 511.347L609.44 132.17C563.582 70.8015 476.99 57.9014 416.03 103.357C355.071 148.812 342.83 235.41 388.688 296.778L672.031 675.955Z" fill="#074E9F"/>
+                    <path d="M215.71 926.788L140.766 813.584C138.444 810.08 135.454 807.075 131.97 804.743C128.486 802.411 124.576 800.799 120.469 800H119.594H117.533H116.097H112.849H111.475H109.352H108.478C104.37 800.799 100.46 802.411 96.9762 804.743C93.4919 807.075 90.502 810.08 88.1801 813.584L13.236 926.788C10.9273 930.261 9.32038 934.157 8.50717 938.256C7.69396 942.354 7.69029 946.573 8.4964 950.673C9.30251 954.773 10.9026 958.672 13.2053 962.149C15.508 965.626 18.4683 968.612 21.917 970.937C25.3657 973.262 29.2354 974.88 33.3051 975.699C37.3749 976.518 41.565 976.521 45.6361 975.71C49.7073 974.898 53.5798 973.287 57.0325 970.968C60.4853 968.649 63.4506 965.668 65.7593 962.195L114.536 888.739L163.312 962.195C167.983 969.161 175.197 973.987 183.384 975.624C191.571 977.261 200.069 975.577 207.029 970.937C210.478 968.612 213.439 965.626 215.741 962.149C218.044 958.672 219.644 954.773 220.451 950.673C221.257 946.573 221.253 942.354 220.44 938.256C219.626 934.157 218.019 930.261 215.71 926.788Z" fill="#3B3B3C"/>
+                    <path d="M414.834 959.432C414.277 958.366 388.967 921.805 363.285 884.679C387.172 850.187 409.388 818.079 409.945 817.075C411.121 814.943 413.473 802.84 401.962 802.84H365.389C363.644 802.74 361.903 803.104 360.34 803.896C358.777 804.688 357.445 805.88 356.477 807.355C356.477 807.355 346.638 821.465 333.085 841.094L309.631 807.355C308.669 805.817 307.318 804.569 305.718 803.741C304.117 802.914 302.327 802.538 300.534 802.652H263.96C252.512 802.652 254.863 814.755 256.039 816.887C256.534 817.891 278.75 849.999 302.638 884.491C277.203 921.805 251.831 958.115 251.026 959.432C249.851 961.565 247.499 973.668 259.009 973.668H295.583C297.327 973.762 299.065 973.395 300.627 972.603C302.189 971.812 303.522 970.623 304.494 969.153L332.837 928.264L361.18 969.153C362.148 970.627 363.48 971.82 365.043 972.612C366.607 973.404 368.347 973.768 370.092 973.668H406.665C418.114 973.417 416.01 961.314 414.834 959.432Z" fill="#3B3B3C"/>
+                    <path d="M531.424 797.368C479.659 797.368 444.737 833.949 444.737 888.379C444.737 942.808 478.731 978.947 531.424 978.947C584.118 978.947 618.421 942.556 618.421 888.379C618.421 833.129 584.303 797.368 531.424 797.368ZM565.913 888.379C565.913 935.997 539.969 935.997 531.424 935.997C522.879 935.997 497.43 935.997 497.43 888.379C497.43 856.024 508.514 840.319 531.424 840.319C554.334 840.319 565.913 856.024 565.913 888.379Z" fill="#3B3B3C"/>
+                    <path d="M726.932 800H725.885C682.785 800 647.381 826.717 647.381 874.131V970.4C647.33 971.161 647.434 971.925 647.688 972.643C647.941 973.361 648.337 974.018 648.852 974.572C649.367 975.126 649.989 975.565 650.679 975.862C651.369 976.158 652.112 976.306 652.861 976.296H692.882C693.727 976.356 694.574 976.238 695.371 975.95C696.169 975.662 696.899 975.21 697.518 974.621C698.136 974.033 698.628 973.321 698.964 972.53C699.3 971.739 699.473 970.886 699.471 970.024V882.221C699.471 850.549 717.573 846.096 726.316 846.096C735.059 846.096 753.161 850.549 753.161 882.221V970.024C753.158 970.892 753.332 971.75 753.672 972.546C754.012 973.341 754.51 974.057 755.135 974.646C755.76 975.235 756.498 975.686 757.303 975.97C758.108 976.254 758.962 976.365 759.811 976.296H799.771C800.519 976.306 801.262 976.158 801.952 975.862C802.642 975.565 803.264 975.126 803.779 974.572C804.294 974.018 804.691 973.361 804.944 972.643C805.197 971.925 805.302 971.161 805.251 970.4V874.068C805.435 826.717 769.847 800 726.932 800Z" fill="#3B3B3C"/>
+                    <path d="M834.439 923.295C834.439 923.295 832.559 915.35 839.578 915.35H877.179C878.485 915.216 879.796 915.555 880.876 916.306C881.956 917.058 882.733 918.172 883.07 919.449C885.388 930.231 893.849 937.861 912.273 938.365C930.698 938.87 938.719 934.393 938.719 923.989C938.719 921.34 937.779 917.368 929.821 913.395C919.856 909.532 909.493 906.803 898.925 905.261C858.128 897.631 837.447 880.039 837.447 853.619C837.184 844.963 839.26 836.398 843.454 828.836C847.648 821.274 853.802 814.998 861.261 810.678C861.261 810.678 878.37 797.688 913.276 797.373C952.13 796.995 981.271 819.127 985.595 843.278C985.744 844.047 985.721 844.84 985.527 845.6C985.334 846.359 984.976 847.066 984.478 847.669C983.981 848.273 983.356 848.757 982.65 849.088C981.943 849.419 981.173 849.588 980.394 849.583H939.283C938.206 849.594 937.14 849.361 936.164 848.903C935.188 848.445 934.327 847.772 933.643 846.935L933.016 846.178C930.131 843.242 926.65 840.967 922.81 839.509C918.971 838.05 914.863 837.443 910.769 837.729C891.029 837.729 891.029 845.674 891.029 848.322C891.029 850.97 892.345 855.952 903.562 860.113C914.627 863.524 925.913 866.158 937.341 867.995C973.688 875.058 992.05 891.83 992.05 917.746C992.48 927.272 990.385 936.741 985.98 945.184C981.576 953.627 975.019 960.74 966.983 965.795C950.875 974.885 932.614 979.397 914.153 978.847C895.072 979.711 876.153 974.98 859.695 965.227C852.606 960.604 846.662 954.41 842.317 947.121C837.972 939.831 835.342 931.638 834.627 923.169C834.627 923.169 834.627 922.601 834.627 922.286" fill="#3B3B3C"/>
+                </svg>
+                AXONS PODCAST
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#episodes">Episodes</a></li>
+                <li><a href="#podcast-crew">Podcast Crew</a></li>
+                <li><a href="#events">Events</a></li>
+            </ul>
+            <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <label class="theme-toggle" title="Toggle light/dark mode">
+                <input type="checkbox" id="theme-switch" aria-label="Toggle light and dark mode">
+                <span class="toggle-slider">
+                    <span class="moon-icon"></span>
+                </span>
+            </label>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="logo-container">
+                    <svg width="882" height="277" viewBox="0 0 882 277" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                             <linearGradient id="axonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00A9E0;" />
+                                <stop offset="100%" style="stop-color:#00B47E;" />
+                            </linearGradient>
+                        </defs>
+                        
+                        <g class="master-animation-group">
+                            <g class="base-style">
+                                <path d="M125.792 1.71362C194.416 1.71362 250.217 62.1994 250.217 137.032C250.217 211.865 194.416 272.351 125.792 272.351C57.1689 272.351 1.36841 211.865 1.36841 137.032C1.3686 62.1995 57.169 1.71373 125.792 1.71362Z" />
+                                <path d="M114.898 2.19617C177.407 2.19617 228.427 62.5714 228.427 137.515C228.427 212.458 177.407 272.834 114.898 272.834C52.3886 272.834 1.36841 212.458 1.36841 137.515C1.36858 62.5714 52.3887 2.19617 114.898 2.19617Z"/>
+                                <path d="M104.003 2.68219C132.218 2.68226 157.85 17.7143 176.468 42.191C195.087 66.6686 206.638 100.538 206.638 138.001C206.638 175.463 195.087 209.333 176.468 233.811C157.85 258.288 132.218 273.32 104.003 273.32C75.7882 273.32 50.1563 258.288 31.5383 233.811C12.9197 209.333 1.36841 175.463 1.36841 138.001C1.36849 100.538 12.9197 66.6686 31.5383 42.191C50.1563 17.7143 75.7881 2.68219 104.003 2.68219Z" />
+                                <path d="M93.1086 3.16602C118.255 3.16618 141.159 18.1359 157.831 42.623C174.499 67.1039 184.848 100.992 184.848 138.484C184.848 175.977 174.499 209.866 157.831 234.347C141.159 258.834 118.255 273.804 93.1086 273.804C67.9626 273.804 45.0572 258.834 28.385 234.347C11.7172 209.866 1.36841 175.977 1.36841 138.484C1.36848 100.992 11.7173 67.1039 28.385 42.623C45.0572 18.1357 67.9626 3.16602 93.1086 3.16602Z" />
+                                <path d="M82.2131 3.64941C104.277 3.64941 124.462 18.5349 139.196 43.0479C153.915 67.5365 163.059 101.446 163.059 138.968C163.059 176.489 153.915 210.4 139.196 234.889C124.462 259.402 104.277 274.287 82.2131 274.287C60.1492 274.287 39.9654 259.401 25.2317 234.889C10.5124 210.4 1.36841 176.489 1.36841 138.968C1.36847 101.446 10.5125 67.5365 25.2317 43.0479C39.9654 18.5351 60.1492 3.64958 82.2131 3.64941Z" />
+                                <path d="M71.3186 4.13367C90.285 4.13367 107.757 18.9052 120.561 43.4667C133.333 67.9683 141.269 101.902 141.269 139.452C141.269 177.002 133.333 210.937 120.561 235.438C107.757 260 90.285 274.771 71.3186 274.771C52.3524 274.771 34.8806 260 22.0774 235.438C9.3052 210.937 1.36841 177.002 1.36841 139.452C1.36846 101.902 9.30524 67.9684 22.0774 43.4667C34.8807 18.9054 52.3523 4.13375 71.3186 4.13367Z"/>
+                                <path d="M60.4241 4.61835C68.3449 4.61835 75.9852 8.24901 83.0393 15.007C90.0997 21.7711 96.5145 31.6183 101.928 43.8801C112.753 68.4002 119.48 102.36 119.48 139.937C119.48 177.513 112.753 211.474 101.928 235.994C96.5145 248.256 90.0997 258.102 83.0393 264.866C75.9851 271.625 68.345 275.256 60.4241 275.256C52.5031 275.256 44.8631 271.625 37.8088 264.866C30.7485 258.102 24.3336 248.256 18.9202 235.994C8.0948 211.474 1.36841 177.513 1.36841 139.937C1.36845 102.36 8.09488 68.4002 18.9202 43.8801C24.3336 31.6183 30.7485 21.7711 37.8088 15.007C44.863 8.24902 52.5032 4.61835 60.4241 4.61835Z"/>
+                                <path d="M388.048 52.3221C401.882 52.3221 414.018 55.0261 424.457 60.4341C435.021 65.842 443.133 73.5767 448.793 83.638C454.578 93.5736 457.471 105.144 457.471 118.35C457.471 131.555 454.578 143.126 448.793 153.061C443.133 162.871 435.021 170.48 424.457 175.888C414.018 181.296 401.882 184 388.048 184H342.017V52.3221H388.048ZM387.104 161.551C400.939 161.551 411.629 157.778 419.175 150.232C426.721 142.686 430.494 132.058 430.494 118.35C430.494 104.641 426.721 93.9509 419.175 86.2792C411.629 78.4816 400.939 74.5828 387.104 74.5828H368.428V161.551H387.104Z"/>
+                                <path d="M574.396 129.48C574.396 133.253 574.144 136.649 573.641 139.667H497.238C497.867 147.213 500.508 153.124 505.161 157.4C509.814 161.676 515.537 163.814 522.328 163.814C532.138 163.814 539.118 159.601 543.268 151.175H571.755C568.736 161.236 562.951 169.537 554.399 176.077C545.847 182.491 535.345 185.698 522.894 185.698C512.833 185.698 503.778 183.497 495.729 179.095C487.805 174.567 481.58 168.216 477.052 160.041C472.65 151.867 470.449 142.434 470.449 131.744C470.449 120.928 472.65 111.433 477.052 103.258C481.454 95.0828 487.617 88.7945 495.54 84.3927C503.463 79.9908 512.581 77.7899 522.894 77.7899C532.83 77.7899 541.696 79.9279 549.494 84.204C557.417 88.4801 563.517 94.5798 567.793 102.503C572.195 110.301 574.396 119.293 574.396 129.48ZM547.041 121.934C546.916 115.143 544.463 109.735 539.684 105.71C534.905 101.56 529.057 99.4847 522.14 99.4847C515.6 99.4847 510.066 101.497 505.538 105.521C501.137 109.42 498.433 114.891 497.426 121.934H547.041Z"/>
+                                <path d="M639.138 185.321C629.957 185.321 621.657 183.748 614.236 180.604C606.942 177.46 601.157 172.933 596.88 167.021C592.604 161.11 590.403 154.13 590.278 146.081H618.575C618.953 151.489 620.839 155.765 624.235 158.91C627.756 162.054 632.535 163.626 638.572 163.626C644.735 163.626 649.577 162.179 653.098 159.287C656.62 156.268 658.38 152.37 658.38 147.59C658.38 143.692 657.186 140.485 654.796 137.969C652.407 135.454 649.388 133.505 645.741 132.121C642.219 130.612 637.314 128.977 631.026 127.216C622.474 124.701 615.494 122.248 610.086 119.859C604.804 117.344 600.213 113.633 596.314 108.729C592.541 103.698 590.655 97.0322 590.655 88.7316C590.655 80.9341 592.604 74.1426 596.503 68.3574C600.402 62.5721 605.873 58.1703 612.916 55.1519C619.959 52.0077 628.008 50.4356 637.063 50.4356C650.646 50.4356 661.65 53.7684 670.077 60.4341C678.629 66.9739 683.345 76.1549 684.226 87.977H655.173C654.922 83.4494 652.972 79.7393 649.325 76.8466C645.804 73.8282 641.088 72.319 635.176 72.319C630.02 72.319 625.87 73.6396 622.726 76.2807C619.707 78.9218 618.198 82.7577 618.198 87.7883C618.198 91.3098 619.33 94.2653 621.594 96.6549C623.983 98.9187 626.876 100.805 630.272 102.314C633.793 103.698 638.698 105.333 644.986 107.219C653.538 109.735 660.518 112.25 665.926 114.765C671.334 117.281 675.988 121.054 679.887 126.084C683.785 131.115 685.735 137.718 685.735 145.893C685.735 152.936 683.911 159.475 680.264 165.512C676.617 171.549 671.272 176.391 664.229 180.038C657.186 183.56 648.822 185.321 639.138 185.321Z"/>
+                                <path d="M701.841 131.744C701.841 120.928 704.042 111.495 708.444 103.446C712.845 95.2715 718.945 88.9831 726.743 84.5813C734.54 80.0537 743.47 77.7899 753.531 77.7899C766.485 77.7899 777.175 81.0598 785.601 87.5997C794.154 94.0138 799.876 103.069 802.769 114.765H774.282C772.773 110.238 770.195 106.716 766.548 104.201C763.026 101.56 758.624 100.239 753.342 100.239C745.796 100.239 739.822 103.006 735.421 108.54C731.019 113.948 728.818 121.683 728.818 131.744C728.818 141.679 731.019 149.414 735.421 154.948C739.822 160.356 745.796 163.06 753.342 163.06C764.032 163.06 771.013 158.281 774.282 148.722H802.769C799.876 160.041 794.154 169.034 785.601 175.699C777.049 182.365 766.359 185.698 753.531 185.698C743.47 185.698 734.54 183.497 726.743 179.095C718.945 174.567 712.845 168.279 708.444 160.23C704.042 152.055 701.841 142.56 701.841 131.744Z"/>
+                                <path d="M835.511 67.0368C830.858 67.0368 826.959 65.5905 823.815 62.6979C820.797 59.6795 819.287 55.9693 819.287 51.5675C819.287 47.1657 820.797 43.5184 823.815 40.6258C826.959 37.6074 830.858 36.0982 835.511 36.0982C840.165 36.0982 844.001 37.6074 847.019 40.6258C850.163 43.5184 851.735 47.1657 851.735 51.5675C851.735 55.9693 850.163 59.6795 847.019 62.6979C844.001 65.5905 840.165 67.0368 835.511 67.0368ZM848.528 79.4877V184H822.117V79.4877H848.528Z"/>
+                                <path d="M503.812 239.637L502.219 247.181H508.003V250.533H501.507L499.705 258.916H496.059L497.861 250.533H489.059L487.257 258.916H483.611L485.413 250.533H478.833V247.181H486.126L487.718 239.637H481.222V236.284H488.431L490.233 227.902H493.879L492.077 236.284H500.878L502.68 227.902H506.327L504.524 236.284H510.35V239.637H503.812ZM500.166 239.637H491.365L489.772 247.181H498.573L500.166 239.637ZM533.143 252.419H520.402L518.055 258.916H514.032L524.593 229.872H528.994L539.513 258.916H535.49L533.143 252.419ZM532.053 249.318L526.772 234.566L521.492 249.318H532.053ZM556.06 244.331L565.029 258.916H560.712L553.713 247.516L547.05 258.916H542.817L551.744 244.331L542.775 229.704H547.05L554.091 241.146L560.796 229.704H565.071L556.06 244.331ZM583.39 259.209C580.68 259.209 578.207 258.58 575.972 257.323C573.737 256.038 571.962 254.263 570.649 252C569.364 249.709 568.721 247.139 568.721 244.289C568.721 241.439 569.364 238.882 570.649 236.619C571.962 234.328 573.737 232.554 575.972 231.297C578.207 230.011 580.68 229.369 583.39 229.369C586.128 229.369 588.615 230.011 590.85 231.297C593.085 232.554 594.845 234.314 596.131 236.577C597.416 238.84 598.059 241.411 598.059 244.289C598.059 247.167 597.416 249.737 596.131 252C594.845 254.263 593.085 256.038 590.85 257.323C588.615 258.58 586.128 259.209 583.39 259.209ZM583.39 255.898C585.43 255.898 587.26 255.423 588.88 254.473C590.529 253.523 591.814 252.168 592.736 250.408C593.686 248.647 594.161 246.608 594.161 244.289C594.161 241.942 593.686 239.902 592.736 238.17C591.814 236.41 590.543 235.055 588.922 234.105C587.302 233.155 585.458 232.68 583.39 232.68C581.322 232.68 579.478 233.155 577.858 234.105C576.237 235.055 574.952 236.41 574.002 238.17C573.08 239.902 572.619 241.942 572.619 244.289C572.619 246.608 573.08 248.647 574.002 250.408C574.952 252.168 576.237 253.523 577.858 254.473C579.506 255.423 581.35 255.898 583.39 255.898Z"/>
+                                <path d="M626.06 258.916H622.246L606.907 235.655V258.916H603.093V229.662H606.907L622.246 252.88V229.662H626.06V258.916Z"/>
+                                <path d="M641.824 259.209C639.896 259.209 638.164 258.874 636.627 258.203C635.118 257.505 633.931 256.555 633.065 255.353C632.198 254.124 631.751 252.713 631.723 251.12H635.789C635.928 252.489 636.487 253.649 637.465 254.599C638.471 255.521 639.924 255.982 641.824 255.982C643.64 255.982 645.065 255.535 646.099 254.641C647.16 253.719 647.691 252.545 647.691 251.12C647.691 250.003 647.384 249.095 646.769 248.396C646.155 247.698 645.386 247.167 644.464 246.803C643.542 246.44 642.299 246.049 640.734 245.63C638.806 245.127 637.256 244.624 636.082 244.121C634.937 243.618 633.945 242.836 633.106 241.774C632.296 240.685 631.891 239.232 631.891 237.416C631.891 235.823 632.296 234.412 633.106 233.183C633.917 231.953 635.048 231.003 636.501 230.333C637.982 229.662 639.672 229.327 641.572 229.327C644.31 229.327 646.546 230.011 648.278 231.38C650.038 232.749 651.03 234.566 651.254 236.829H647.063C646.923 235.711 646.336 234.733 645.302 233.895C644.269 233.029 642.899 232.596 641.195 232.596C639.603 232.596 638.303 233.015 637.297 233.853C636.292 234.663 635.789 235.809 635.789 237.29C635.789 238.352 636.082 239.218 636.669 239.888C637.284 240.559 638.024 241.076 638.89 241.439C639.784 241.774 641.027 242.165 642.62 242.612C644.548 243.143 646.099 243.674 647.272 244.205C648.446 244.708 649.451 245.504 650.29 246.594C651.128 247.656 651.547 249.108 651.547 250.953C651.547 252.378 651.17 253.719 650.415 254.976C649.661 256.233 648.543 257.253 647.063 258.035C645.582 258.818 643.835 259.209 641.824 259.209Z"/>
+                                <path d="M676.69 238.254C676.69 240.685 675.851 242.71 674.175 244.331C672.527 245.923 669.998 246.72 666.589 246.72H660.973V258.916H657.159V229.704H666.589C669.886 229.704 672.387 230.5 674.091 232.093C675.823 233.685 676.69 235.739 676.69 238.254ZM666.589 243.576C668.713 243.576 670.277 243.115 671.283 242.193C672.289 241.271 672.792 239.958 672.792 238.254C672.792 234.649 670.724 232.847 666.589 232.847H660.973V243.576H666.589Z"/>
+                                <path d="M694.673 259.209C691.963 259.209 689.491 258.58 687.255 257.323C685.02 256.038 683.246 254.263 681.933 252C680.647 249.709 680.005 247.139 680.005 244.289C680.005 241.439 680.647 238.882 681.933 236.619C683.246 234.328 685.02 232.554 687.255 231.297C689.491 230.011 691.963 229.369 694.673 229.369C697.412 229.369 699.898 230.011 702.133 231.297C704.369 232.554 706.129 234.314 707.414 236.577C708.699 238.84 709.342 241.411 709.342 244.289C709.342 247.167 708.699 249.737 707.414 252C706.129 254.263 704.369 256.038 702.133 257.323C699.898 258.58 697.412 259.209 694.673 259.209ZM694.673 255.898C696.713 255.898 698.543 255.423 700.164 254.473C701.812 253.523 703.097 252.168 704.019 250.408C704.969 248.647 705.444 246.608 705.444 244.289C705.444 241.942 704.969 239.902 704.019 238.17C703.097 236.41 701.826 235.055 700.206 234.105C698.585 233.155 696.741 232.68 694.673 232.68C692.606 232.68 690.762 233.155 689.141 234.105C687.521 235.055 686.235 236.41 685.286 238.17C684.363 239.902 683.902 241.942 683.902 244.289C683.902 246.608 684.363 248.647 685.286 250.408C686.235 252.168 687.521 253.523 689.141 254.473C690.79 255.423 692.634 255.898 694.673 255.898Z"/>
+                                <path d="M723.471 229.704C726.657 229.704 729.409 230.305 731.728 231.506C734.075 232.68 735.863 234.37 737.092 236.577C738.35 238.785 738.978 241.383 738.978 244.373C738.978 247.362 738.35 249.961 737.092 252.168C735.863 254.347 734.075 256.024 731.728 257.197C729.409 258.343 726.657 258.916 723.471 258.916H714.377V229.704H723.471ZM723.471 255.772C727.243 255.772 730.121 254.78 732.105 252.797C734.089 250.785 735.081 247.977 735.081 244.373C735.081 240.74 734.075 237.904 732.063 235.865C730.079 233.825 727.215 232.805 723.471 232.805H718.191V255.772H723.471Z"/>
+                                <path d="M742.584 244.289C742.584 241.439 743.227 238.882 744.512 236.619C745.797 234.328 747.543 232.54 749.751 231.255C751.986 229.969 754.458 229.327 757.169 229.327C760.354 229.327 763.134 230.095 765.509 231.632C767.884 233.169 769.616 235.348 770.706 238.17H766.138C765.327 236.41 764.154 235.055 762.617 234.105C761.108 233.155 759.292 232.68 757.169 232.68C755.129 232.68 753.299 233.155 751.678 234.105C750.058 235.055 748.787 236.41 747.865 238.17C746.943 239.902 746.482 241.942 746.482 244.289C746.482 246.608 746.943 248.647 747.865 250.408C748.787 252.14 750.058 253.481 751.678 254.431C753.299 255.381 755.129 255.856 757.169 255.856C759.292 255.856 761.108 255.395 762.617 254.473C764.154 253.523 765.327 252.168 766.138 250.408H770.706C769.616 253.202 767.884 255.367 765.509 256.904C763.134 258.413 760.354 259.167 757.169 259.167C754.458 259.167 751.986 258.538 749.751 257.281C747.543 255.996 745.797 254.222 744.512 251.958C743.227 249.695 742.584 247.139 742.584 244.289Z"/>
+                                <path d="M793.65 252.419H780.909L778.562 258.916H774.539L785.1 229.872H789.501L800.02 258.916H795.997L793.65 252.419ZM792.56 249.318L787.28 234.566L781.999 249.318H792.56Z"/>
+                                <path d="M813.886 259.209C811.958 259.209 810.225 258.874 808.689 258.203C807.18 257.505 805.992 256.555 805.126 255.353C804.26 254.124 803.813 252.713 803.785 251.12H807.85C807.99 252.489 808.549 253.649 809.527 254.599C810.533 255.521 811.986 255.982 813.886 255.982C815.702 255.982 817.127 255.535 818.16 254.641C819.222 253.719 819.753 252.545 819.753 251.12C819.753 250.003 819.446 249.095 818.831 248.396C818.216 247.698 817.448 247.167 816.526 246.803C815.604 246.44 814.361 246.049 812.796 245.63C810.868 245.127 809.317 244.624 808.144 244.121C806.998 243.618 806.006 242.836 805.168 241.774C804.358 240.685 803.953 239.232 803.953 237.416C803.953 235.823 804.358 234.412 805.168 233.183C805.978 231.953 807.11 231.003 808.563 230.333C810.044 229.662 811.734 229.327 813.634 229.327C816.372 229.327 818.607 230.011 820.34 231.38C822.1 232.749 823.092 234.566 823.315 236.829H819.124C818.985 235.711 818.398 234.733 817.364 233.895C816.33 233.029 814.961 232.596 813.257 232.596C811.664 232.596 810.365 233.015 809.359 233.853C808.353 234.663 807.85 235.809 807.85 237.29C807.85 238.352 808.144 239.218 808.731 239.888C809.345 240.559 810.086 241.076 810.952 241.439C811.846 241.774 813.089 242.165 814.682 242.612C816.61 243.143 818.16 243.674 819.334 244.205C820.507 244.708 821.513 245.504 822.351 246.594C823.19 247.656 823.609 249.108 823.609 250.953C823.609 252.378 823.232 253.719 822.477 254.976C821.723 256.233 820.605 257.253 819.124 258.035C817.644 258.818 815.897 259.209 813.886 259.209Z"/>
+                                <path d="M847.201 229.704V232.805H839.238V258.916H835.424V232.805H827.419V229.704H847.201Z"/>
+                            </g>
+                
+                            <g class="logo-glow">
+                                <path d="M125.792 1.71362C194.416 1.71362 250.217 62.1994 250.217 137.032C250.217 211.865 194.416 272.351 125.792 272.351C57.1689 272.351 1.36841 211.865 1.36841 137.032C1.3686 62.1995 57.169 1.71373 125.792 1.71362Z" />
+                                <path d="M114.898 2.19617C177.407 2.19617 228.427 62.5714 228.427 137.515C228.427 212.458 177.407 272.834 114.898 272.834C52.3886 272.834 1.36841 212.458 1.36841 137.515C1.36858 62.5714 52.3887 2.19617 114.898 2.19617Z"/>
+                            </g>
+                            <g class="text-glow">
+                                <path d="M388.048 52.3221C401.882 52.3221 414.018 55.0261 424.457 60.4341C435.021 65.842 443.133 73.5767 448.793 83.638C454.578 93.5736 457.471 105.144 457.471 118.35C457.471 131.555 454.578 143.126 448.793 153.061C443.133 162.871 435.021 170.48 424.457 175.888C414.018 181.296 401.882 184 388.048 184H342.017V52.3221H388.048ZM387.104 161.551C400.939 161.551 411.629 157.778 419.175 150.232C426.721 142.686 430.494 132.058 430.494 118.35C430.494 104.641 426.721 93.9509 419.175 86.2792C411.629 78.4816 400.939 74.5828 387.104 74.5828H368.428V161.551H387.104Z"/>
+                                <path d="M574.396 129.48C574.396 133.253 574.144 136.649 573.641 139.667H497.238C497.867 147.213 500.508 153.124 505.161 157.4C509.814 161.676 515.537 163.814 522.328 163.814C532.138 163.814 539.118 159.601 543.268 151.175H571.755C568.736 161.236 562.951 169.537 554.399 176.077C545.847 182.491 535.345 185.698 522.894 185.698C512.833 185.698 503.778 183.497 495.729 179.095C487.805 174.567 481.580 168.216 477.052 160.041C472.650 151.867 470.449 142.434 470.449 131.744C470.449 120.928 472.650 111.433 477.052 103.258C481.454 95.0828 487.617 88.7945 495.540 84.3927C503.463 79.9908 512.581 77.7899 522.894 77.7899C532.830 77.7899 541.696 79.9279 549.494 84.204C557.417 88.4801 563.517 94.5798 567.793 102.503C572.195 110.301 574.396 119.293 574.396 129.48ZM547.041 121.934C546.916 115.143 544.463 109.735 539.684 105.71C534.905 101.560 529.057 99.4847 522.140 99.4847C515.600 99.4847 510.066 101.497 505.538 105.521C501.137 109.420 498.433 114.891 497.426 121.934H547.041Z"/>
+                                <path d="M639.138 185.321C629.957 185.321 621.657 183.748 614.236 180.604C606.942 177.460 601.157 172.933 596.880 167.021C592.604 161.110 590.403 154.130 590.278 146.081H618.575C618.953 151.489 620.839 155.765 624.235 158.910C627.756 162.054 632.535 163.626 638.572 163.626C644.735 163.626 649.577 162.179 653.098 159.287C656.620 156.268 658.380 152.370 658.380 147.590C658.380 143.692 657.186 140.485 654.796 137.969C652.407 135.454 649.388 133.505 645.741 132.121C642.219 130.612 637.314 128.977 631.026 127.216C622.474 124.701 615.494 122.248 610.086 119.859C604.804 117.344 600.213 113.633 596.314 108.729C592.541 103.698 590.655 97.0322 590.655 88.7316C590.655 80.9341 592.604 74.1426 596.503 68.3574C600.402 62.5721 605.873 58.1703 612.916 55.1519C619.959 52.0077 628.008 50.4356 637.063 50.4356C650.646 50.4356 661.650 53.7684 670.077 60.4341C678.629 66.9739 683.345 76.1549 684.226 87.977H655.173C654.922 83.4494 652.972 79.7393 649.325 76.8466C645.804 73.8282 641.088 72.3190 635.176 72.3190C630.020 72.3190 625.870 73.6396 622.726 76.2807C619.707 78.9218 618.198 82.7577 618.198 87.7883C618.198 91.3098 619.330 94.2653 621.594 96.6549C623.983 98.9187 626.876 100.805 630.272 102.314C633.793 103.698 638.698 105.333 644.986 107.219C653.538 109.735 660.518 112.250 665.926 114.765C671.334 117.281 675.988 121.054 679.887 126.084C683.785 131.115 685.735 137.718 685.735 145.893C685.735 152.936 683.911 159.475 680.264 165.512C676.617 171.549 671.272 176.391 664.229 180.038C657.186 183.560 648.822 185.321 639.138 185.321Z"/>
+                                <path d="M701.841 131.744C701.841 120.928 704.042 111.495 708.444 103.446C712.845 95.2715 718.945 88.9831 726.743 84.5813C734.540 80.0537 743.470 77.7899 753.531 77.7899C766.485 77.7899 777.175 81.0598 785.601 87.5997C794.154 94.0138 799.876 103.069 802.769 114.765H774.282C772.773 110.238 770.195 106.716 766.548 104.201C763.026 101.560 758.624 100.239 753.342 100.239C745.796 100.239 739.822 103.006 735.421 108.540C731.019 113.948 728.818 121.683 728.818 131.744C728.818 141.679 731.019 149.414 735.421 154.948C739.822 160.356 745.796 163.060 753.342 163.060C764.032 163.060 771.013 158.281 774.282 148.722H802.769C799.876 160.041 794.154 169.034 785.601 175.699C777.049 182.365 766.359 185.698 753.531 185.698C743.470 185.698 734.540 183.497 726.743 179.095C718.945 174.567 712.845 168.279 708.444 160.230C704.042 152.055 701.841 142.560 701.841 131.744Z"/>
+                                <path d="M835.511 67.0368C830.858 67.0368 826.959 65.5905 823.815 62.6979C820.797 59.6795 819.287 55.9693 819.287 51.5675C819.287 47.1657 820.797 43.5184 823.815 40.6258C826.959 37.6074 830.858 36.0982 835.511 36.0982C840.165 36.0982 844.001 37.6074 847.019 40.6258C850.163 43.5184 851.735 47.1657 851.735 51.5675C851.735 55.9693 850.163 59.6795 847.019 62.6979C844.001 65.5905 840.165 67.0368 835.511 67.0368ZM848.528 79.4877V184H822.117V79.4877H848.528Z"/>
+                                <path d="M503.812 239.637L502.219 247.181H508.003V250.533H501.507L499.705 258.916H496.059L497.861 250.533H489.059L487.257 258.916H483.611L485.413 250.533H478.833V247.181H486.126L487.718 239.637H481.222V236.284H488.431L490.233 227.902H493.879L492.077 236.284H500.878L502.680 227.902H506.327L504.524 236.284H510.35V239.637H503.812ZM500.166 239.637H491.365L489.772 247.181H498.573L500.166 239.637ZM533.143 252.419H520.402L518.055 258.916H514.032L524.593 229.872H528.994L539.513 258.916H535.490L533.143 252.419ZM532.053 249.318L526.772 234.566L521.492 249.318H532.053ZM556.060 244.331L565.029 258.916H560.712L553.713 247.516L547.050 258.916H542.817L551.744 244.331L542.775 229.704H547.050L554.091 241.146L560.796 229.704H565.071L556.060 244.331ZM583.390 259.209C580.680 259.209 578.207 258.580 575.972 257.323C573.737 256.038 571.962 254.263 570.649 252C569.364 249.709 568.721 247.139 568.721 244.289C568.721 241.439 569.364 238.882 570.649 236.619C571.962 234.328 573.737 232.554 575.972 231.297C578.207 230.011 580.680 229.369 583.390 229.369C586.128 229.369 588.615 230.011 590.850 231.297C593.085 232.554 594.845 234.314 596.131 236.577C597.416 238.840 598.059 241.411 598.059 244.289C598.059 247.167 597.416 249.737 596.131 252C594.845 254.263 593.085 256.038 590.850 257.323C588.615 258.580 586.128 259.209 583.390 259.209ZM583.390 255.898C585.430 255.898 587.260 255.423 588.880 254.473C590.529 253.523 591.814 252.168 592.736 250.408C593.686 248.647 594.161 246.608 594.161 244.289C594.161 241.942 593.686 239.902 592.736 238.170C591.814 236.410 590.543 235.055 588.922 234.105C587.302 233.155 585.458 232.680 583.390 232.680C581.322 232.680 579.478 233.155 577.858 234.105C576.237 235.055 574.952 236.410 574.002 238.170C573.080 239.902 572.619 241.942 572.619 244.289C572.619 246.608 573.080 248.647 574.002 250.408C574.952 252.168 576.237 253.523 577.858 254.473C579.506 255.423 581.350 255.898 583.390 255.898Z"/>
+                                <path d="M626.060 258.916H622.246L606.907 235.655V258.916H603.093V229.662H606.907L622.246 252.880V229.662H626.060V258.916Z"/>
+                                <path d="M641.824 259.209C639.896 259.209 638.164 258.874 636.627 258.203C635.118 257.505 633.931 256.555 633.065 255.353C632.198 254.124 631.751 252.713 631.723 251.120H635.789C635.928 252.489 636.487 253.649 637.465 254.599C638.471 255.521 639.924 255.982 641.824 255.982C643.640 255.982 645.065 255.535 646.099 254.641C647.160 253.719 647.691 252.545 647.691 251.120C647.691 250.003 647.384 249.095 646.769 248.396C646.155 247.698 645.386 247.167 644.464 246.803C643.542 246.440 642.299 246.049 640.734 245.630C638.806 245.127 637.256 244.624 636.082 244.121C634.937 243.618 633.945 242.836 633.106 241.774C632.296 240.685 631.891 239.232 631.891 237.416C631.891 235.823 632.296 234.412 633.106 233.183C633.917 231.953 635.048 231.003 636.501 230.333C637.982 229.662 639.672 229.327 641.572 229.327C644.310 229.327 646.546 230.011 648.278 231.380C650.038 232.749 651.030 234.566 651.254 236.829H647.063C646.923 235.711 646.336 234.733 645.302 233.895C644.269 233.029 642.899 232.596 641.195 232.596C639.603 232.596 638.303 233.015 637.297 233.853C636.292 234.663 635.789 235.809 635.789 237.290C635.789 238.352 636.082 239.218 636.669 239.888C637.284 240.559 638.024 241.076 638.890 241.439C639.784 241.774 641.027 242.165 642.620 242.612C644.548 243.143 646.099 243.674 647.272 244.205C648.446 244.708 649.451 245.504 650.290 246.594C651.128 247.656 651.547 249.108 651.547 250.953C651.547 252.378 651.170 253.719 650.415 254.976C649.661 256.233 648.543 257.253 647.063 258.035C645.582 258.818 643.835 259.209 641.824 259.209Z"/>
+                                <path d="M676.690 238.254C676.690 240.685 675.851 242.710 674.175 244.331C672.527 245.923 669.998 246.720 666.589 246.720H660.973V258.916H657.159V229.704H666.589C669.886 229.704 672.387 230.500 674.091 232.093C675.823 233.685 676.690 235.739 676.690 238.254ZM666.589 243.576C668.713 243.576 670.277 243.115 671.283 242.193C672.289 241.271 672.792 239.958 672.792 238.254C672.792 234.649 670.724 232.847 666.589 232.847H660.973V243.576H666.589Z"/>
+                                <path d="M694.673 259.209C691.963 259.209 689.491 258.580 687.255 257.323C685.020 256.038 683.246 254.263 681.933 252C680.647 249.709 680.005 247.139 680.005 244.289C680.005 241.439 680.647 238.882 681.933 236.619C683.246 234.328 685.020 232.554 687.255 231.297C689.491 230.011 691.963 229.369 694.673 229.369C697.412 229.369 699.898 230.011 702.133 231.297C704.369 232.554 706.129 234.314 707.414 236.577C708.699 238.840 709.342 241.411 709.342 244.289C709.342 247.167 708.699 249.737 707.414 252C706.129 254.263 704.369 256.038 702.133 257.323C699.898 258.580 697.412 259.209 694.673 259.209ZM694.673 255.898C696.713 255.898 698.543 255.423 700.164 254.473C701.812 253.523 703.097 252.168 704.019 250.408C704.969 248.647 705.444 246.608 705.444 244.289C705.444 241.942 704.969 239.902 704.019 238.170C703.097 236.410 701.826 235.055 700.206 234.105C698.585 233.155 696.741 232.680 694.673 232.680C692.606 232.680 690.762 233.155 689.141 234.105C687.521 235.055 686.235 236.410 685.286 238.170C684.363 239.902 683.902 241.942 683.902 244.289C683.902 246.608 684.363 248.647 685.286 250.408C686.235 252.168 687.521 253.523 689.141 254.473C690.790 255.423 692.634 255.898 694.673 255.898Z"/>
+                                <path d="M723.471 229.704C726.657 229.704 729.409 230.305 731.728 231.506C734.075 232.680 735.863 234.370 737.092 236.577C738.350 238.785 738.978 241.383 738.978 244.373C738.978 247.362 738.350 249.961 737.092 252.168C735.863 254.347 734.075 256.024 731.728 257.197C729.409 258.343 726.657 258.916 723.471 258.916H714.377V229.704H723.471ZM723.471 255.772C727.243 255.772 730.121 254.780 732.105 252.797C734.089 250.785 735.081 247.977 735.081 244.373C735.081 240.740 734.075 237.904 732.063 235.865C730.079 233.825 727.215 232.805 723.471 232.805H718.191V255.772H723.471Z"/>
+                                <path d="M742.584 244.289C742.584 241.439 743.227 238.882 744.512 236.619C745.797 234.328 747.543 232.540 749.751 231.255C751.986 229.969 754.458 229.327 757.169 229.327C760.354 229.327 763.134 230.095 765.509 231.632C767.884 233.169 769.616 235.348 770.706 238.170H766.138C765.327 236.410 764.154 235.055 762.617 234.105C761.108 233.155 759.292 232.680 757.169 232.680C755.129 232.680 753.299 233.155 751.678 234.105C750.058 235.055 748.787 236.410 747.865 238.170C746.943 239.902 746.482 241.942 746.482 244.289C746.482 246.608 746.943 248.647 747.865 250.408C748.787 252.140 750.058 253.481 751.678 254.431C753.299 255.381 755.129 255.856 757.169 255.856C759.292 255.856 761.108 255.395 762.617 254.473C764.154 253.523 765.327 252.168 766.138 250.408H770.706C769.616 253.202 767.884 255.367 765.509 256.904C763.134 258.413 760.354 259.167 757.169 259.167C754.458 259.167 751.986 258.538 749.751 257.281C747.543 255.996 745.797 254.222 744.512 251.958C743.227 249.695 742.584 247.139 742.584 244.289Z"/>
+                                <path d="M793.650 252.419H780.909L778.562 258.916H774.539L785.100 229.872H789.501L800.020 258.916H795.997L793.650 252.419ZM792.560 249.318L787.280 234.566L781.999 249.318H792.560Z"/>
+                                <path d="M813.886 259.209C811.958 259.209 810.225 258.874 808.689 258.203C807.180 257.505 805.992 256.555 805.126 255.353C804.260 254.124 803.813 252.713 803.785 251.120H807.850C807.990 252.489 808.549 253.649 809.527 254.599C810.533 255.521 811.986 255.982 813.886 255.982C815.702 255.982 817.127 255.535 818.160 254.641C819.222 253.719 819.753 252.545 819.753 251.120C819.753 250.003 819.446 249.095 818.831 248.396C818.216 247.698 817.448 247.167 816.526 246.803C815.604 246.440 814.361 246.049 812.796 245.630C810.868 245.127 809.317 244.624 808.144 244.121C806.998 243.618 806.006 242.836 805.168 241.774C804.358 240.685 803.953 239.232 803.953 237.416C803.953 235.823 804.358 234.412 805.168 233.183C805.978 231.953 807.110 231.003 808.563 230.333C810.044 229.662 811.734 229.327 813.634 229.327C816.372 229.327 818.607 230.011 820.340 231.380C822.100 232.749 823.092 234.566 823.315 236.829H819.124C818.985 235.711 818.398 234.733 817.364 233.895C816.330 233.029 814.961 232.596 813.257 232.596C811.664 232.596 810.365 233.015 809.359 233.853C808.353 234.663 807.850 235.809 807.850 237.290C807.850 238.352 808.144 239.218 808.731 239.888C809.345 240.559 810.086 241.076 810.952 241.439C811.846 241.774 813.089 242.165 814.682 242.612C816.610 243.143 818.160 243.674 819.334 244.205C820.507 244.708 821.513 245.504 822.351 246.594C823.190 247.656 823.609 249.108 823.609 250.953C823.609 252.378 823.232 253.719 822.477 254.976C821.723 256.233 820.605 257.253 819.124 258.035C817.644 258.818 815.897 259.209 813.886 259.209Z"/>
+                                <path d="M847.201 229.704V232.805H839.238V258.916H835.424V232.805H827.419V229.704H847.201Z"/>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                
+                <div class="podcast-badge">🎙️ UX/UI Design Podcast</div>
+                <h1 class="hero-title">Design vs Science Conversation</h1>
+                <p class="hero-subtitle">Exploring the intersection of UX strategy, design systems, and enterprise innovation with industry leaders, product visionaries, and the minds shaping the future of digital experiences.</p>
+                
+                <div class="listen-platforms">
+                    <a href="https://www.youtube.com/@axonsofficial" class="platform-btn" target="_blank" rel="noopener noreferrer">
+                        <span>🎙️</span> YouTube
+                    </a>
+                    <a href="https://www.facebook.com/AXONSofficial" class="platform-btn" target="_blank" rel="noopener noreferrer">
+                        <span>📘</span> Facebook
+                    </a>
+                </div>
+                
+                <a href="#episodes" class="cta-button">Latest Episodes</a>
+            </div>
+        </section>
+
+        <!-- Newsletter Registration Box -->
+        <section id="newsletter" class="newsletter-section">
+            <div class="newsletter-container">
+                <h2 class="newsletter-title">Stay Updated!</h2>
+                <p class="newsletter-desc">Subscribe to our newsletter and be the first to know about upcoming podcast features and exclusive content.</p>
+                <form class="newsletter-form" autocomplete="off">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required />
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+                <div class="newsletter-thankyou" style="display:none;">Thank you for subscribing! 🎉</div>
+            </div>
+        </section>
+
+        <section id="episodes" class="episodes">
+            <div class="episodes-container">
+                <h2 class="section-title">Latest Episodes</h2>
+                <div class="episodes-grid">
+                    <div class="episode-card">
+                        <div class="episode-number">EP 4</div>
+                        <h3 class="episode-title">ที่มาที่ไป ว่าจะได้ UX/UI Tools นั้น เค้ามีวิธีคิดกันยังไง? และทำยังไง?</h3>
+                        <p class="episode-guest">Coming Soon</p>
+                        <p class="episode-description">
+                            เจาะลึกการพัฒนาเครื่องมือ UX/UI ตั้งแต่แนวคิด กระบวนการคิด วิธีการทำงาน และเทคนิคที่นำไปสู่การสร้างสรรค์เครื่องมือที่ช่วยให้ Designer ทำงานได้อย่างมีประสิทธิภาพ
+                        </p>
+                        <div class="episode-meta">
+                            <span>Launch: Nov 7, 2024 • 45 min</span>
+                            <button class="play-btn">🔜 Soon</button>
+                        </div>
+                    </div>
+
+                    <div class="episode-card">
+                        <div class="episode-number">EP 3</div>
+                        <h3 class="episode-title">ถอดรหัสดี UX จาก Metro Map สำหรับออกแบบ Application</h3>
+                        <p class="episode-guest">Coming Soon</p>
+                        <p class="episode-description">
+                            วิเคราะห์หลักการออกแบบ UX ที่ดีจากแผนที่รถไฟใต้ดิน เรียนรู้วิธีการนำหลักการเหล่านี้มาประยุกต์ใช้ในการออกแบบแอปพลิเคชันให้ใช้งานง่ายและเข้าใจง่าย
+                        </p>
+                        <div class="episode-meta">
+                            <span>Launch: Oct 3, 2024 • 38 min</span>
+                            <button class="play-btn">🔜 Soon</button>
+                        </div>
+                    </div>
+
+                    <div class="episode-card">
+                        <div class="episode-number">EP 2</div>
+                        <h3 class="episode-title">ChatGPT กับ Human UX Researcher ใครกำ Research ได้ดีกว่ากัน?</h3>
+                        <p class="episode-guest">Coming Soon</p>
+                        <p class="episode-description">
+                            เปรียบเทียบความสามารถของ AI และ Human UX Researcher ในการทำ Research สำรวจข้อดีข้อเสียของแต่ละแนวทาง และหาคำตอบว่าใครทำ Research ได้ดีกว่ากัน
+                        </p>
+                        <div class="episode-meta">
+                            <span>Launch: Sep 5, 2024 • 42 min</span>
+                            <button class="play-btn">🔜 Soon</button>
+                        </div>
+                    </div>
+
+                    <div class="episode-card">
+                        <div class="episode-number">EP 1</div>
+                        <h3 class="episode-title">Designing for Motivation: ออกแบบยังไงให้ผู้ใช้ร่วมแรงใจในการใช้งาน</h3>
+                        <p class="episode-guest">Available Now</p>
+                        <p class="episode-description">
+                            สำรวจหลักการออกแบบที่กระตุ้นให้ผู้ใช้เกิดแรงจูงใจ เรียนรู้เทคนิคทางจิตวิทยา และวิธีการประยุกต์ใช้ในการออกแบบประสบการณ์ผู้ใช้ที่มีส่วนร่วมและสร้างแรงบันดาลใจ
+                        </p>
+                        <div class="episode-meta">
+                            <span>Launched: Aug 8, 2024 • 40 min</span>
+                            <button class="play-btn">▶ Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="podcast-crew" class="podcast-crew">
+            <div class="podcast-crew-container">
+                <h2 class="section-title">Meet the Podcast Crew</h2>
+                <div class="podcast-crew-grid">
+                    <div class="crew-card">
+                        <div class="crew-avatar" style="background: none; padding: 0; overflow: hidden;">
+                            <img src="tum-photo.png" alt="Tum" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; display: block;" />
+                        </div>
+                        <h3 class="crew-name">Tum</h3>
+                        <p class="crew-role">Head of UX & Strategy, Host</p>
+                        <p class="crew-bio">
+                            Tum leads the DeSci podcast as Head of UX & Strategy. Renowned for his expertise in UX frameworks, he is passionate about making every design measurable and actionable. Tum believes that great design is not just about aesthetics, but about creating impact through evidence-based, strategic thinking.
+                        </p>
+                    </div>
+                    <div class="crew-card">
+                        <div class="crew-avatar" style="background: none; padding: 0; overflow: hidden;">
+                            <img src="lamon-photo.png" alt="Lamon" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; display: block;" />
+                        </div>
+                        <h3 class="crew-name">Lamon</h3>
+                        <p class="crew-role">UX Strategy & Research</p>
+                        <p class="crew-bio">
+                            She works with everyone who needs help on UX Research and Product Management and frameworks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="events">
+            <div class="events-container">
+                <h2 class="section-title">Upcoming Events</h2>
+                
+                <div class="event-card">
+                    <div class="event-date">February 15, 2025</div>
+                    <h3 class="event-title">AXONS Design Summit 2025</h3>
+                    <p class="event-description">
+                        Join us for our annual design summit featuring keynotes from industry leaders, hands-on workshops, and networking opportunities. This year's theme: "Design at Scale: Innovation in Enterprise Environments."
+                    </p>
+                    <a href="#" class="event-link">Register Now →</a>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">March 8, 2025</div>
+                    <h3 class="event-title">Live Podcast Recording: The Future of AI in UX</h3>
+                    <p class="event-description">
+                        Be part of a live podcast recording as we explore the intersection of artificial intelligence and user experience design with special guests from leading tech companies.
+                    </p>
+                    <a href="#" class="event-link">RSVP Here →</a>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">March 22, 2025</div>
+                    <h3 class="event-title">Design Systems Masterclass</h3>
+                    <p class="event-description">
+                        A comprehensive workshop covering advanced design systems topics including component architecture, design tokens, and scaling strategies for large organizations.
+                    </p>
+                    <a href="#" class="event-link">Learn More →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 AXONS UX/UI Podcast. Conversations that shape the future of design.<br>© สงวนลิขสิทธิ์ 2566 แบรนด์ แอ๊กซอน</p>
+            <div class="footer-links">
+                <a href="https://axonstech.com/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                <a href="https://axonstech.com/terms-of-service" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling with offset for fixed navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            hamburger.addEventListener('click', function() {
+                const expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                this.classList.toggle('active');
+                navLinks.classList.toggle('open');
+            });
+            // Close menu on link click (mobile)
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                });
+            });
+            // Get all navigation links for smooth scroll
+            const navLinksAll = document.querySelectorAll('.nav-links a');
+            navLinksAll.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        const navHeight = document.querySelector('nav').offsetHeight;
+                        const targetPosition = targetSection.offsetTop - navHeight - 20;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            // Also handle the CTA button in hero section
+            const ctaButton = document.querySelector('.cta-button[href="#episodes"]');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector('#episodes');
+                    if (targetSection) {
+                        const navHeight = document.querySelector('nav').offsetHeight;
+                        const targetPosition = targetSection.offsetTop - navHeight - 20;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+
+        // Newsletter form logic
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                newsletterForm.style.display = 'none';
+                document.querySelector('.newsletter-thankyou').style.display = 'block';
+            });
+        }
+
+        // Theme toggle logic
+        const themeSwitch = document.getElementById('theme-switch');
+        const root = document.documentElement;
+        // Load theme from localStorage or system preference
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                root.setAttribute('data-theme', 'dark');
+                themeSwitch.checked = true;
+            } else {
+                root.setAttribute('data-theme', 'light');
+                themeSwitch.checked = false;
+            }
+        }
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+        themeSwitch.addEventListener('change', function() {
+            const theme = this.checked ? 'dark' : 'light';
+            setTheme(theme);
+            localStorage.setItem('theme', theme);
+        });
+
+        // Performance optimization: Pause animations when not visible
+        const observerOptions = {
+            rootMargin: '100px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                } else {
+                    entry.target.style.animationPlayState = 'paused';
+                }
+            });
+        }, observerOptions);
+
+        // Observe animated elements
+        document.querySelectorAll('.logo-container svg, .particle, .background-grid').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Reduce motion for users who prefer it
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.style.setProperty('--animation-duration', '0s');
+            document.querySelectorAll('*').forEach(el => {
+                el.style.animationDuration = '0s';
+                el.style.animationDelay = '0s';
+            });
+        }
+    </script>
+</body>
+</html>
